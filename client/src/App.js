@@ -7,20 +7,23 @@ import NotFound from "./components/NotFound/NotFound";
 // ProtectedRoutes for authenticated access
 const ProtectedRoutes = ({ children }) => {
   const isLoggedIn = localStorage.getItem("user:token") !== null;
+  console.log("ProtectedRoutes - isLoggedIn:", isLoggedIn);
 
   if (!isLoggedIn) {
+    console.log("ProtectedRoutes - Redirecting to /users/sign_in");
     return <Navigate to="/users/sign_in" replace />;
   }
 
   return children;
 };
 
-// Optional: PublicRoutes to prevent access by authenticated users
-const PublicRoutes = ({ children, auth=false }) => {
+// PublicRoutes to prevent access by authenticated users
+const PublicRoutes = ({ children, auth = false }) => {
   const isLoggedIn = localStorage.getItem("user:token") !== null;
+  console.log("PublicRoutes - isLoggedIn:", isLoggedIn);
 
-  if (isLoggedIn &&  auth) {
-
+  if (isLoggedIn && auth) {
+    console.log("PublicRoutes - Redirecting to /");
     return <Navigate to="/" replace />;
   }
 
@@ -44,7 +47,7 @@ function App() {
       <Route
         path="/users/sign_in"
         element={
-          <PublicRoutes>
+          <PublicRoutes auth={true}>
             <Form isSignInPage={true} />
           </PublicRoutes>
         }
@@ -54,7 +57,7 @@ function App() {
       <Route
         path="/users/sign_up"
         element={
-          <PublicRoutes>
+          <PublicRoutes auth={true}>
             <Form isSignInPage={false} />
           </PublicRoutes>
         }
