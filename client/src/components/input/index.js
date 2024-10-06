@@ -12,7 +12,7 @@ const Input = ({
   onChange = () => {},
 }) => {
   return (
-    <div className="w-[80%]">
+    <div className="w-[75%]">
       <label htmlFor={name} className="block text-sm font-medium text-gray-800">
         {label}
       </label>

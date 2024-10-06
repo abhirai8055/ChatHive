@@ -4,24 +4,33 @@ import Dashboard from "./modules/Dashboard";
 import Form from "./modules/Form";
 import NotFound from "./components/NotFound/NotFound";
 
+// ProtectedRoutes for authenticated access
 const ProtectedRoutes = ({ children }) => {
-  const isLoggedIn = localStorage.getItem("user:token") !== null || true;
-  console.log("isLoggedIn :=>", isLoggedIn);
+  const isLoggedIn = localStorage.getItem("user:token") !== null;
 
   if (!isLoggedIn) {
-    return <Navigate to="/user/sign_in" replace={true} />;
-  } else if (
-    isLoggedIn &&
-    ["/users/sign_in", "/users/sign_up"].includes(window.location.pathname)
-  ) {
-    return <Navigate to={"/"} />;
+    return <Navigate to="/users/sign_in" replace />;
   }
+
+  return children;
+};
+
+// Optional: PublicRoutes to prevent access by authenticated users
+const PublicRoutes = ({ children, auth=false }) => {
+  const isLoggedIn = localStorage.getItem("user:token") !== null;
+
+  if (isLoggedIn &&  auth) {
+
+    return <Navigate to="/" replace />;
+  }
+
   return children;
 };
 
 function App() {
   return (
     <Routes>
+      {/* Protected Route for Dashboard */}
       <Route
         path="/"
         element={
@@ -30,24 +39,29 @@ function App() {
           </ProtectedRoutes>
         }
       />
+
+      {/* Public Route for Sign In */}
       <Route
         path="/users/sign_in"
         element={
-          <ProtectedRoutes>
+          <PublicRoutes>
             <Form isSignInPage={true} />
-          </ProtectedRoutes>
+          </PublicRoutes>
         }
       />
+
+      {/* Public Route for Sign Up */}
       <Route
         path="/users/sign_up"
         element={
-          <ProtectedRoutes>
+          <PublicRoutes>
             <Form isSignInPage={false} />
-          </ProtectedRoutes>
+          </PublicRoutes>
         }
       />
+
+      {/* Catch-All Route for 404 Not Found */}
       <Route path="*" element={<NotFound />} />
-      <Route path="*" element={<Navigate to="/" />} />
     </Routes>
   );
 }

@@ -3,11 +3,7 @@ const app = express();
 require("./dbconnection/dbconfig");
 const port =9000;
 
-
 const userRouter = require("./routing/userRouter");
-
-
-
 
 app.use('/user', userRouter);
 

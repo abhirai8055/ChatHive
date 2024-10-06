@@ -11,6 +11,20 @@ const Form = ({ isSignInPage = true }) => {
     password: "",
   });
 
+  const handleOnSubmit=async(e)=>{
+    e.preventDefault();
+    console.log(data);
+    const res=await fetch(`http://localhost:9000/user/${isSignInPage ? 'login' : 'signUp'}`,{
+      method:'POST',
+      headers:{
+        'Content-Type':'application/json',
+        },
+        body:JSON.stringify(data)
+    })
+    const resData=await res.json();
+    console.log(resData);
+  }
+
   const navigate=useNavigate();
   return (
     <div className="bg-gray-50 flex h-screen items-center justify-center">
@@ -24,8 +38,8 @@ const Form = ({ isSignInPage = true }) => {
             : "Sign up now to get started !"}
         </div>
         <form
-          className="flex flex-col items-center justify-center w-full"
-          onSubmit={() => console.log("Submitted...")}
+          className="flex flex-col items-center justify-center w-[75%]"
+          onSubmit={(e) => handleOnSubmit()}
         >
           {!isSignInPage && (
             <Input
@@ -58,7 +72,7 @@ const Form = ({ isSignInPage = true }) => {
           />
           <Button
             label={isSignInPage ? "Sign in" : "Sign up"}
-            className="w-1/2 mb-2"
+            className="w-[75%] mb-2"
             type="submit"
           />
         </form>
