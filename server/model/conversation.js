@@ -9,7 +9,7 @@ const conversestionSchema = Schema(
         },
         
       
-    },
+    }, 
     { timestamps: true }
 );
 module.exports = model("conversestion", conversestionSchema);
