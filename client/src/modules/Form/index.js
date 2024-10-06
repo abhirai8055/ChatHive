@@ -11,19 +11,25 @@ const Form = ({ isSignInPage = true }) => {
     password: "",
   });
 
-  const handleOnSubmit=async(e)=>{
+  const handleOnSubmit = async (e) => {
     e.preventDefault();
-    console.log(data);
-    const res=await fetch(`http://localhost:3002/user/${isSignInPage ? 'login' : 'signUp'}`,{
-      method:'POST',
-      headers:{
-        'Content-Type':'application/json',
-        },
-        body:JSON.stringify(data)
-    })
-    const resData=await res.json();
-    console.log(resData);
-  }
+    try {
+        const res = await fetch(`http://localhost:9000/user/${isSignInPage ? 'login' : 'signUp'}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data),
+        });
+
+        if (!res.ok) throw new Error('Network response was not ok');
+        const resData = await res.json();
+        console.log(resData);
+    } catch (error) {
+        console.error('Error:', error);
+    }
+};
+
 
   const navigate=useNavigate();
   return (
@@ -39,7 +45,7 @@ const Form = ({ isSignInPage = true }) => {
         </div>
         <form
           className="flex flex-col items-center justify-center w-[75%]"
-          onSubmit={(e) => handleOnSubmit()}
+          onSubmit={(e) => handleOnSubmit(e)}
         >
           {!isSignInPage && (
             <Input

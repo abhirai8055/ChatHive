@@ -24,6 +24,7 @@ const Input = ({
         required={isRequired}
         value={value}
         onChange={onChange}
+        
       />
     </div>
   );
