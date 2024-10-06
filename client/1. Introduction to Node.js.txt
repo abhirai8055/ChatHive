@@ -1,0 +1,96 @@
+1. Introduction to Node.js
+
+ What is Node.js?
+
+Node.js is a platform that allows us to run JavaScript code on our computer.
+it to create server-side applications, not just client-side webpages.
+
+
+Installation and Setup
+
+ we can go to the Node.js website, download the installer, and run it. It will guide us through the installation process step by step.
+Once installed, we can use the Node.js command prompt or terminal to run JavaScript files on our computer.
+
+
+Features
+
+1. Asynchronous and Event Driven- the server never waits for the response of the API it will move to the next API. the event-driven mechanism is like a signal that something has happened, such as a user clicking a button or a file finishing downloading Node.js allows you to define functions (callbacks) that should be executed when certain events occur.
+
+2. Ecosystem of modules - node.js has a vast support of modules like core modules, local modules, and third-party modules.
+e.g. SMTP, bycrypt, fs, mongoose, etc. 
+
+3. Fast - Node.js is built on the V8 JavaScript engine, the same engine that powers the Google Chrome web browser. This makes it fast and efficient.
+
+
+Use Cases
+
+1. commonly used for web servers and APIs
+2. Develop real-time applications like chat application games etc.
+3. can be used in IoT.
+
+
+
+2. Asynchronous Programming 
+
+- Understanding Asynchronous Programming in Node.js
+ Asynchronous programming allows multiple tasks to be executed at the same time, without blocking the execution of other tasks.
+In Node.js, most I/O operations (such as reading from a file, making an HTTP request, or querying a database) are asynchronous by default.
+we use async/await keywords to declare the function async and wait for the promises.
+
+- Callback Functions:
+
+Callback functions are a fundamental concept in asynchronous programming in Node.js.
+A callback function is a function that is passed as an argument to another function, which then invokes the callback function once a certain task or operation is completed.
+**photo**
+
+
+
+
+3. Data Handling
+
+   - Connecting to databases (e.g., MongoDB)
+Node.js allows us to connect to various databases, both SQL and NoSQL. 
+
+First, we need to install Mongoose and require it in our Node.js application.
+Then, use the mongoose.connect() method to establish a connection to our MongoDB database.
+
+- Performing CRUD Operations:
+
+Define a Mongoose schema to represent the structure of the database.
+Use the model's methods to perform CRUD operations like (create, read, update, delete).
+**photo** **photo**
+
+
+4. Testing Node.js Applications
+
+Testing APIs ensures functionality, reliability, and performance, helping to identify and resolve issues early in the development process.
+
+Tools for API Testing-
+
+1. postman - 
+ postman is used for API testing.
+ we can get the response while testing the API and even we can specify where the data has to be given (headers, query, parameter, etc).
+ we can create a collection of APIs.
+
+2. Swagger-
+Swagger is an API specification framework (OpenAPI Specification) used for defining, documenting, and testing RESTful APIs.
+swagger also provides a web-based interface to test the API.
+we can use "Swagger YAML or JSON" to document  API endpoints, parameters, responses, and authentication requirements.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
