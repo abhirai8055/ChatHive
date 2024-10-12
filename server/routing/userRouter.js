@@ -8,7 +8,8 @@ router.post("/login", controller.login);
 router.post("/conversation", controller.conversation);
 router.get("/:userId", controller.getUserId);
 router.post("/message", controller.message);
-router.get("/coversation/:conversationId", controller.getConversationId)
+router.get("/conversation/:conversationId", controller.getConversationId)
+router.get("/data/:userId", controller.getAllUser)
 
 
  

@@ -1,33 +1,22 @@
 import { Routes, Route, Navigate } from "react-router-dom";
 import "./App.css";
-import Dashboard from "./modules/Dashboard";
-import Form from "./modules/Form";
-import NotFound from "./components/NotFound/NotFound";
+import Dashboard from "./modules/Dashboard/index";
+import Form from "./modules/Form/index";
+// import NotFound from "./components/NotFound/NotFound";
 
 // ProtectedRoutes for authenticated access
-const ProtectedRoutes = ({ children }) => {
+const ProtectedRoute = ({ children, auth = false }) => {
   const isLoggedIn = localStorage.getItem("user:token") !== null;
-  console.log("ProtectedRoutes - isLoggedIn:", isLoggedIn);
 
-  if (!isLoggedIn) {
-    console.log("ProtectedRoutes - Redirecting to /users/sign_in");
-    return <Navigate to="/users/sign_in" replace />;
+  if (auth && !isLoggedIn) {
+    // Redirect to sign-in if not logged in and auth is required
+    return <Navigate to="/users/sign_in" />;
+  } else if (isLoggedIn && ["/users/sign_in", "/users/sign_up"].includes(window.location.pathname)) {
+    // Redirect to Dashboard if logged in and trying to access sign-in or sign-up
+    return <Navigate to="/" />;
   }
 
-  return children;
-};
-
-// PublicRoutes to prevent access by authenticated users
-const PublicRoutes = ({ children, auth = false }) => {
-  const isLoggedIn = localStorage.getItem("user:token") !== null;
-  console.log("PublicRoutes - isLoggedIn:", isLoggedIn);
-
-  if (isLoggedIn && auth) {
-    console.log("PublicRoutes - Redirecting to /");
-    return <Navigate to="/" replace />;
-  }
-
-  return children;
+  return children; // Render children if all checks pass
 };
 
 function App() {
@@ -37,34 +26,32 @@ function App() {
       <Route
         path="/"
         element={
-          <ProtectedRoutes>
+          <ProtectedRoute auth={true}>
             <Dashboard />
-          </ProtectedRoutes>
+          </ProtectedRoute>
         }
       />
 
-      {/* Public Route for Sign In */}
+      {/* Public Routes */}
       <Route
         path="/users/sign_in"
         element={
-          <PublicRoutes auth={true}>
+          <ProtectedRoute>
             <Form isSignInPage={true} />
-          </PublicRoutes>
+          </ProtectedRoute>
         }
       />
-
-      {/* Public Route for Sign Up */}
       <Route
         path="/users/sign_up"
         element={
-          <PublicRoutes auth={true}>
+          <ProtectedRoute>
             <Form isSignInPage={false} />
-          </PublicRoutes>
+          </ProtectedRoute>
         }
       />
 
       {/* Catch-All Route for 404 Not Found */}
-      <Route path="*" element={<NotFound />} />
+      {/* <Route path="*" element={<NotFound />} /> */}
     </Routes>
   );
 }
