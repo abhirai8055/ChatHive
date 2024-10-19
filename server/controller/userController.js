@@ -8,6 +8,45 @@ const jwt = require("jsonwebtoken");
 const secretKey = "Key"; // Consider moving this to environment variables
 
 module.exports = {
+
+  createGuestUser: async (req, res) => {
+    try {
+        // Generate a unique guest username
+        const guestUsername = `Guest${Math.floor(Math.random() * 10000)}`;
+        
+        // Create a new guest user in the database
+        const newUser = new userModel({
+            fullName: guestUsername,
+            email: `${guestUsername}@guest.com`,
+            password: null, // No password needed for guest
+            isGuest: true // Optional field to indicate guest status
+        });
+
+        const result = await newUser.save();
+
+        // Generate a token for the guest user
+        const token = jwt.sign(
+            { _id: result._id },
+            secretKey,
+            { expiresIn: '24h' } // Token expires in 24 hours
+        );
+
+        // Return the newly created guest user details
+        return res.status(200).send({
+            responseCode: 200,
+            responseMessage: "Guest user created successfully.",
+            token: token,
+            name: result.fullName,
+            email: result.email
+        });
+    } catch (error) {
+        console.error(error);
+        return res.status(500).send({
+            responseCode: 500,
+            responseMessage: "Internal server error.",
+        });
+    }
+},
   signUp: async (req, res, next) => {
     try {
       const { fullName, email, password } = req.body;

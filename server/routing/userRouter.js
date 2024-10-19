@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 router.use(express.json())
 const controller = require("../controller/userController");
-
+router.post("/guest", controller.createGuestUser);
 router.post("/signUp", controller.signUp);
 router.post("/login", controller.login);
 router.post("/conversation", controller.conversation);

@@ -13,11 +13,25 @@ const Form = ({
         email: '',
         password: ''
     });
+    const [isGuest, setIsGuest] = useState(false);
+    const [guestName, setGuestName] = useState("");
     const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
-        console.log('data :>> ', data);
         e.preventDefault();
+        
+        if (isGuest) {
+            // Handle guest login
+            localStorage.setItem('user:token', 'guest-token'); // Example token for guest
+            localStorage.setItem('user:detail', JSON.stringify({
+                id: 'guest-id',
+                fullName: guestName,
+                email: 'guest@example.com',
+            }));
+            navigate('/');
+            return;
+        }
+
         try {
             const res = await fetch(`http://localhost:9000/user/${isSignInPage ? 'login' : 'signUp'}`, {
                 method: 'POST',
@@ -33,19 +47,16 @@ const Form = ({
                 const resData = await res.json();
                 if (resData.token) {
                     localStorage.setItem('user:token', resData.token);
-                    // Store user details correctly based on backend response
                     localStorage.setItem('user:detail', JSON.stringify({
                         id: resData.id,
                         fullName: resData.name,
                         email: resData.email,
                     }));
-                    // Navigate to the home page or any other page you want
                     navigate('/');
                 } else {
-                    // If signup is successful, navigate to the sign-in page
                     if (!isSignInPage) {
                         alert('Sign up successful! Redirecting to sign in...');
-                        navigate('/users/sign_in'); // Navigate to sign-in page after successful signup
+                        navigate('/users/sign_in');
                     } else {
                         alert('An error occurred. Please try again.');
                     }
@@ -106,6 +117,34 @@ const Form = ({
                         {isSignInPage ? 'Sign Up' : 'Sign In'}
                     </span>
                 </div>
+                {/* Guest Login Button */}
+                <div className="mt-4">
+                    <button
+                        className="text-blue-600 underline cursor-pointer"
+                        onClick={() => setIsGuest(true)}
+                    >
+                        Continue as Guest
+                    </button>
+                </div>
+                {/* Guest Name Input Modal */}
+                {isGuest && (
+                    <div className="mt-4">
+                        <Input
+                            label="Guest Name"
+                            name="guestName"
+                            placeholder="Enter your name"
+                            className="mb-6 w-full"
+                            value={guestName}
+                            onChange={(e) => setGuestName(e.target.value)}
+                        />
+                        <Button
+                            label="Confirm Guest"
+                            type='button'
+                            className="w-[75%] mb-4 bg-blue-600 hover:bg-blue-700 text-white"
+                            onClick={handleSubmit} // Reuse handleSubmit for guest
+                        />
+                    </div>
+                )}
             </div>
         </div>
     );

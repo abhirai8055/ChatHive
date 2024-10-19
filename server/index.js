@@ -19,6 +19,7 @@ const userRouter = require("./routing/userRouter");
 const userController = require("./controller/userController");
 require("./dbconnection/dbconfig");
 
+
 app.use(
   cors({
     origin: "http://localhost:3000", // Allow your frontend to access this server
